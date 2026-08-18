@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sinolytics Internal — Document Finder</title>
+<style>
+  :root {
+    --ink: #141414;
+    --paper: #ffffff;
+    --red: #a4161a;
+    --grey: #6b6b6b;
+    --line: #e6e2df;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  .stage {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6vw 24px;
+  }
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12.5px;
+    letter-spacing: 0.22em;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 28px;
+  }
+  .eyebrow::before, .eyebrow::after {
+    content: "";
+    width: 22px;
+    height: 2px;
+    background: var(--red);
+  }
+  h1 {
+    font-size: clamp(34px, 5vw, 58px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    margin-bottom: 22px;
+    max-width: 14ch;
+  }
+  h1 .accent { color: var(--red); }
+  .sub {
+    color: var(--grey);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 52ch;
+    margin-bottom: 40px;
+  }
+  .cta {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 14px 30px;
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .cta:hover { background: var(--red); }
+  .footnote {
+    margin-top: 22px;
+    font-size: 12.5px;
+    color: #b0b0b0;
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="eyebrow">SINOLYTICS · INTERNAL</div>
+  <h1>Find the <span class="accent">source report</span> behind any snippet</h1>
+  <p class="sub">
+    Paste a passage or upload a report excerpt, and this tool traces it back
+    to the exact internal document it came from — then lets you dig into
+    that document directly, with full conversation memory.
+  </p>
+  <a class="cta" href="app.html">Open Document Finder</a>
+  <div class="footnote">Internal analyst tool · companion to the Sinolytics client-facing RAG demo</div>
+</div>
+</body>
+</html>
