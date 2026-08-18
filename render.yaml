@@ -1,0 +1,20 @@
+# Render "Blueprint" — lets Render auto-configure the service when you
+# connect this repo, instead of filling in build/start commands by hand.
+# The env vars themselves are NOT set here (this file is public on
+# GitHub) — Render will prompt you to paste each value in manually when
+# you deploy, or you add them afterward under the service's Environment tab.
+services:
+  - type: web
+    name: internaltool-demo-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false

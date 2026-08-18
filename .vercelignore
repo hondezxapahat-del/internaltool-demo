@@ -1,0 +1,10 @@
+# Vercel only needs to serve the static frontend (index.html, app.html).
+# Everything else here is backend source that deploys separately (to
+# Render) — no reason for Vercel to upload or serve it as static files.
+*.py
+*.sql
+*.log
+__pycache__/
+docs/
+.claude/
+.mcp.json

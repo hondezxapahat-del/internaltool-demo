@@ -33,6 +33,11 @@ class AskRequest(BaseModel):
     session_id: Optional[str] = None
 
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+
 @app.post("/identify")
 def identify(req: IdentifyRequest):
     return identify_source(req.snippet)
