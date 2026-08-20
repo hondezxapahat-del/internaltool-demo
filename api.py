@@ -13,7 +13,7 @@ from pydantic import BaseModel
 import conversations
 from document_id import identify_source
 
-app = FastAPI(title="Sinolytics Internal Analyst Companion API")
+app = FastAPI(title="Sinolume Internal Analyst Companion API")
 
 app.add_middleware(
     CORSMiddleware,

@@ -6,13 +6,13 @@ memory/context does not carry over here automatically. Read this file first.
 
 ## What this project is
 
-An internal-facing companion tool to the "Sinolytics RAG Demo" project at
+An internal-facing companion tool to the "Sinolume RAG Demo" project at
 `d:\firstclass-demo` — read that project's `README.md`, `docs/PRD_v1.1.md`,
 `docs/TechSpec_v1.1.md`, `docs/PRD_v1.2.md`, and `docs/TechSpec_v1.2.md` for
 full context on the existing, client-facing product before starting.
 
 The existing project is a client-facing RAG chatbot for a fictional China
-strategy advisory firm ("Sinolytics"). This new project models a companion
+strategy advisory firm ("Sinolume"). This new project models a companion
 tool **for the firm's own internal analysts** rather than clients — like the
 client product, it's ultimately a portfolio piece for an interview (Working
 Student – Data and AI Application role), not something meant to run against

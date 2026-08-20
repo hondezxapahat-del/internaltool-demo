@@ -13,7 +13,7 @@ from document_id import identify_source
 mcp = MCPServer(
     name="sinolytics-internal-document-finder",
     instructions=(
-        "Identifies which internal Sinolytics document a pasted text snippet "
+        "Identifies which internal Sinolume document a pasted text snippet "
         "came from, then answers follow-up questions scoped to that document. "
         "Always call identify_document first — never guess a source_document "
         "for ask_document without a matched result from identify_document."
