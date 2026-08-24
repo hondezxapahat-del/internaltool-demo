@@ -14,7 +14,7 @@ The latest data from the International Federation of Robotics (IFR) confirms Chi
 Growth stabilizes after a record-breaking surge
 The development follows a period of explosive growth. After a remarkable surge in 2021, where new installations jumped by nearly 60% year-on-year to over 268,000 units, the market has entered a phase of more stable, consolidated growth. Installations grew modestly to around 290,000 in 2022 before a slight dip in 2023, and then recovered in 2024. This pattern suggests that the initial wave of post-pandemic investment in automation has matured into a steady, high-level integration of robots into industrial processes, moving beyond a simple catch-up effect to a structural feature of the economy.
 
-Sinolytics Radar 238 Industrial Robot Installations
+Sinolume Radar 238 Industrial Robot Installations
 
 15th Five-Year Plan frames automation as a resilience agenda
 The relentless push for automation is a cornerstone of Beijing’s industrial strategy, now further codified in the 15th Five-Year Plan (2026-2030). The plan frames industrial upgrading as a core “competitiveness and resilience agenda,” emphasizing the need to strengthen industrial foundations and enhance supply chain security. This strategic vision provides the top-level justification for the massive investments in automation. Looking ahead, the plan signals the next frontier by designating “future industries” such as humanoid robotics and embodied intelligence as national priorities, suggesting the current wave of industrial robot adoption is building the foundation for an even more advanced, AI-driven manufacturing ecosystem.

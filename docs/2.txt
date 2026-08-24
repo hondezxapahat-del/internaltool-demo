@@ -14,7 +14,7 @@ WorkBuddy recorded 20.97 million PC-client visits in June 2026, accounting for r
 Big tech already dominates the competitive landscape
 Tencent-related products generated approximately 32.6 million visits, followed by ByteDance with 14.4 million and Alibaba with 9.2 million. Together, the three companies accounted for around 93% of total traffic, highlighting the importance of existing users, distribution channels and workplace ecosystems.
 
-Sinolytics Radar 243 China's desktop AI
+Sinolume Radar 243 China's desktop AI
 
 Competition is shifting from product launches to consolidation
 Tencent is reportedly aligning QClaw more closely with WorkBuddy, while Alibaba plans to combine QoderWork, Wukong, and MuleRun into Qwen Office. ByteDance is also exploring deeper integration between Doubao and Feishu, suggesting that leading players are beginning to consolidate previously fragmented agent products.
