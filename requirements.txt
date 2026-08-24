@@ -5,3 +5,5 @@ supabase
 python-dotenv
 pydantic
 mcp[cli]
+bcrypt
+pyjwt
