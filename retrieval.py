@@ -7,6 +7,7 @@ reporting *which* document matched, not just answering from a pooled corpus.
 
 import os
 import re
+from pathlib import Path
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -16,7 +17,11 @@ EMBEDDING_MODEL = "text-embedding-3-small"
 RERANK_MODEL = "gpt-4o-mini"
 MATCH_COUNT = 5
 
-load_dotenv()
+# Explicit path, not just load_dotenv() — a caller that launches this by
+# absolute path (e.g. Claude Desktop's mcpServers config) won't necessarily
+# have this project directory as its working directory, and load_dotenv()
+# with no path only searches upward from the current working directory.
+load_dotenv(Path(__file__).parent / ".env")
 
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 SUPABASE_URL = os.environ["SUPABASE_URL"]
