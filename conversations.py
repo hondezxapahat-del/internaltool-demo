@@ -1,7 +1,7 @@
 """Conversation-thread persistence: create/list/read/delete threads, and
-read/write the messages inside them. Single-user for tonight's demo — no
-`user_id` column yet, but adding one later just adds a WHERE clause, it
-doesn't restructure these tables (see setup_conversations.sql).
+read/write the messages inside them. Every thread-level operation is scoped
+to a `user_id` (setup_auth.sql) — a thread belongs to exactly the account
+that created it, and every read/list/delete filters on that ownership.
 """
 
 from datetime import datetime, timezone
@@ -17,10 +17,16 @@ def make_title(question):
     return question[:TITLE_MAX_LEN]
 
 
-def create_thread(question, source_document):
+def create_thread(user_id, question, source_document):
     result = (
         supabase.table("conversation_threads")
-        .insert({"title": make_title(question), "source_document": source_document})
+        .insert(
+            {
+                "user_id": user_id,
+                "title": make_title(question),
+                "source_document": source_document,
+            }
+        )
         .execute()
     )
     return result.data[0]["session_id"]
@@ -32,21 +38,26 @@ def touch_thread(session_id):
     ).eq("session_id", session_id).execute()
 
 
-def list_threads():
+def list_threads(user_id):
     result = (
         supabase.table("conversation_threads")
         .select("session_id, title, source_document, updated_at")
+        .eq("user_id", user_id)
         .order("updated_at", desc=True)
         .execute()
     )
     return result.data
 
 
-def get_thread(session_id):
+def get_thread(user_id, session_id):
+    """Returns None if the thread doesn't exist OR belongs to someone else —
+    the caller can't tell those two cases apart, which is deliberate (a 404
+    for someone else's thread shouldn't confirm that thread even exists)."""
     result = (
         supabase.table("conversation_threads")
         .select("session_id, title, source_document")
         .eq("session_id", session_id)
+        .eq("user_id", user_id)
         .limit(1)
         .execute()
     )
@@ -70,17 +81,32 @@ def add_message(session_id, role, content):
     ).execute()
 
 
-def delete_thread(session_id):
-    supabase.table("conversation_threads").delete().eq("session_id", session_id).execute()
+def delete_thread(user_id, session_id):
+    """Only deletes if the thread actually belongs to user_id — a delete
+    call for someone else's session_id matches zero rows — returns whether a
+    row was actually deleted, so the caller doesn't get a false "deleted"
+    for a thread that was never theirs to begin with."""
+    result = (
+        supabase.table("conversation_threads")
+        .delete()
+        .eq("session_id", session_id)
+        .eq("user_id", user_id)
+        .execute()
+    )
+    return len(result.data) > 0
 
 
-def ask_and_persist(question, source_document, session_id=None):
+def ask_and_persist(user_id, question, source_document, session_id=None):
     """Answer a question about a document, persisting both turns and the
     thread itself. Shared by the FastAPI backend (api.py) and the MCP server
     (mcp_server.py) so a conversation started from one interface behaves
-    identically to one started from the other — same thread, same memory."""
-    if session_id is None:
-        session_id = create_thread(question, source_document)
+    identically to one started from the other — same thread, same memory.
+
+    If session_id is given but doesn't belong to user_id, a fresh thread is
+    started instead of silently writing into someone else's conversation."""
+    thread = get_thread(user_id, session_id) if session_id else None
+    if thread is None:
+        session_id = create_thread(user_id, question, source_document)
         history = []
     else:
         history = get_messages(session_id)

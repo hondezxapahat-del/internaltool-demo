@@ -36,6 +36,9 @@
   .thread-item:hover .thread-item-delete { visibility: visible; }
   .thread-item-delete:hover { color: var(--red); background: #f0d6d6; }
   .thread-empty { font-size: 12.5px; color: var(--grey); padding: 8px 10px; }
+  .sidebar-bottom { padding: 12px 16px 16px 16px; border-top: 1px solid var(--line); }
+  .logout-btn { font-size: 12px; color: var(--grey); background: none; border: none; cursor: pointer; padding: 0; }
+  .logout-btn:hover { color: var(--red); }
 
   .top { display: flex; align-items: center; justify-content: space-between; padding: 16px 28px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
   .doc-badge { font-size: 12px; color: var(--grey); }
@@ -113,6 +116,9 @@
     </div>
     <button class="sidebar-new-chat" onclick="startNewChat()">+ New chat</button>
     <div class="thread-list" id="threadList"></div>
+    <div class="sidebar-bottom">
+      <button class="logout-btn" onclick="logout()">Log out</button>
+    </div>
   </div>
 
 <div class="app">
@@ -150,6 +156,28 @@
 
 <script>
 const API_BASE = "https://internaltool-demo.onrender.com";
+
+const authToken = localStorage.getItem('access_token');
+if (!authToken) {
+  window.location.href = 'login.html';
+}
+
+function logout() {
+  localStorage.removeItem('access_token');
+  window.location.href = 'login.html';
+}
+
+async function authFetch(path, options = {}) {
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...options,
+    headers: { ...(options.headers || {}), 'Authorization': `Bearer ${authToken}` },
+  });
+  if (res.status === 401) {
+    logout();
+    throw new Error('Session expired — please log in again.');
+  }
+  return res;
+}
 
 const identifyCard = document.getElementById('identifyCard');
 const snippetInput = document.getElementById('snippetInput');
@@ -192,7 +220,7 @@ function enterChatMode(sourceDocument) {
 
 async function loadThreadList() {
   try {
-    const res = await fetch(`${API_BASE}/conversations`);
+    const res = await authFetch('/conversations');
     if (!res.ok) throw new Error(`Server returned ${res.status}`);
     renderThreadList(await res.json());
   } catch (err) {
@@ -223,7 +251,7 @@ function renderThreadList(items) {
     row.querySelector('.thread-item-delete').addEventListener('click', async (e) => {
       e.stopPropagation();
       if (!confirm(`Delete "${item.title}"?`)) return;
-      await fetch(`${API_BASE}/conversations/${item.session_id}`, { method: 'DELETE' });
+      await authFetch(`/conversations/${item.session_id}`, { method: 'DELETE' });
       if (item.session_id === sessionId) {
         startNewChat();
         return;
@@ -247,7 +275,7 @@ async function openThread(id) {
 
 async function loadHistoryIntoView(id) {
   try {
-    const res = await fetch(`${API_BASE}/conversations/${id}`);
+    const res = await authFetch(`/conversations/${id}`);
     if (!res.ok) throw new Error(`Server returned ${res.status}`);
     const data = await res.json();
     enterChatMode(data.source_document);
@@ -355,7 +383,7 @@ identifyBtn.addEventListener('click', async () => {
   identifyBtn.textContent = 'Identifying...';
   resultBox.classList.remove('show', 'matched', 'unmatched');
   try {
-    const res = await fetch(`${API_BASE}/identify`, {
+    const res = await authFetch('/identify', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ snippet }),
@@ -396,7 +424,7 @@ async function ask(question) {
   renderUserMessage(question);
   renderThinking();
   try {
-    const res = await fetch(`${API_BASE}/ask`, {
+    const res = await authFetch('/ask', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question, source_document: currentDocument, session_id: sessionId }),
